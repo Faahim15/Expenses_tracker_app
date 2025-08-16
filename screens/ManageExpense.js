@@ -5,6 +5,7 @@ import { GlobalStyles } from "../constants/styles";
 import Button from "../components/ui/Button";
 import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/manageExpense/ExpenseForm";
+import { storeExpense } from "../store/http";
 
 export default function ManageExpense({ route, navigation }) {
   const editedExpenseId = route.params?.expenseId;
@@ -28,7 +29,10 @@ export default function ManageExpense({ route, navigation }) {
   }
   function confirmHandler(expenseData) {
     if (isEditing) expensesCtx.updateExpense(editedExpenseId, expenseData);
-    else expensesCtx.addExpense(expenseData);
+    else {
+      storeExpense(expenseData);
+      expensesCtx.addExpense(expenseData);
+    }
     navigation.goBack();
   }
   return (
